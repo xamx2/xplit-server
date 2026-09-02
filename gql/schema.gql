@@ -1,0 +1,39 @@
+type Query {
+  currentUser: User!
+}
+
+type Mutation {
+  createGroup(input: GroupInput!): Group!
+  createGroupMember(groupId: ID!, input: GroupMemberInput!): GroupMember!
+}
+
+type User {
+  id: Int!
+  groups: [Group!]!
+  group(id: ID!): Group!
+}
+
+type Group {
+  id: Int!
+  name: String!
+  members: [GroupMember!]!
+}
+
+type GroupMember {
+  id: Int!
+  name: String
+  role: GroupMemberRole!
+}
+
+input GroupInput {
+  name: String
+}
+
+input GroupMemberInput {
+  name: String
+}
+
+enum GroupMemberRole {
+  owner
+  member
+}

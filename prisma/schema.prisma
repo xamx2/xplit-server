@@ -1,0 +1,43 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("PRISMA_DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  groups GroupMember[]
+
+  @@map("users")
+}
+
+model Group {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(255)
+
+  members GroupMember[]
+
+  @@map("groups")
+}
+
+model GroupMember {
+  id        Int             @id @default(autoincrement())
+  groupId   Int             @map("group_id")
+  userId    Int?            @map("user_id")
+  name      String?         @db.VarChar(255)
+  role      GroupMemberRole @default(MEMBER)
+  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz()
+
+  group Group @relation(fields: [groupId], references: [id])
+  user  User? @relation(fields: [userId], references: [id])
+
+  @@unique([groupId, userId])
+  @@map("group_members")
+}
+
+enum GroupMemberRole {
+  OWNER  @map("owner")
+  MEMBER @map("member")
+
+  @@map("group_member_role")
+}
