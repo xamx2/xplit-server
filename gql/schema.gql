@@ -1,3 +1,5 @@
+scalar Time
+
 type Query {
   currentUser: User!
 }
@@ -5,6 +7,7 @@ type Query {
 type Mutation {
   createGroup(input: GroupInput!): Group!
   createGroupMember(groupId: ID!, input: GroupMemberInput!): GroupMember!
+  createTransaction(groupId: ID!, input: TransactionInput!): Transaction!
 }
 
 type User {
@@ -17,6 +20,7 @@ type Group {
   id: Int!
   name: String!
   members: [GroupMember!]!
+  transactions: [Transaction!]!
 }
 
 type GroupMember {
@@ -25,12 +29,40 @@ type GroupMember {
   role: GroupMemberRole!
 }
 
+type Transaction {
+  id: Int!
+  amount: Float!
+  description: String
+  createdAt: Time!
+  splits: [TransactionSplit!]!
+  member: GroupMember!
+}
+
+type TransactionSplit {
+  transactionId: Int!
+  memberId: Int!
+  amount: Float!
+  member: GroupMember!
+}
+
 input GroupInput {
   name: String
 }
 
 input GroupMemberInput {
   name: String
+}
+
+input TransactionInput {
+  amount: Float!
+  description: String
+  memberId: Int!
+  splits: [TransactionSplitInput!]!
+}
+
+input TransactionSplitInput {
+  amount: Float!
+  memberId: Int!
 }
 
 enum GroupMemberRole {

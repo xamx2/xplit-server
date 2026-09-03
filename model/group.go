@@ -17,3 +17,11 @@ func (g Group) Members(db bun.IDB, ctx context.Context) (mems []GroupMember, err
 	err = db.NewSelect().Model(&mems).Where("group_id = ?", g.ID).Scan(ctx)
 	return
 }
+
+func (g Group) Transactions(db bun.IDB, ctx context.Context) (ts []Transaction, err error) {
+	err = db.NewSelect().Model(&ts).
+		Join("JOIN group_members AS gm ON gm.id = t.member_id").
+		Where("gm.group_id = ?", g.ID).
+		Scan(ctx)
+	return
+}

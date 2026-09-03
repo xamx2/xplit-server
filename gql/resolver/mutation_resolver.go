@@ -42,3 +42,21 @@ func (*mutationResolver) CreateGroupMember(ctx context.Context, args struct {
 	}
 	return &groupMemberResolver{*gm}, nil
 }
+
+func (*mutationResolver) CreateTransaction(ctx context.Context, args struct {
+	argument.GroupArgument
+	Input input.TransactionInput
+}) (*transactionResolver, error) {
+	t := new(model.Transaction)
+	if err := args.Input.Decode(t); err != nil {
+		return nil, err
+	}
+	m, err := args.Member(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := m.CreateTransaction(contexts.UseDB(ctx), ctx, t); err != nil {
+		return nil, err
+	}
+	return &transactionResolver{*t}, nil
+}

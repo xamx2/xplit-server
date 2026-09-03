@@ -28,11 +28,33 @@ model GroupMember {
   role      GroupMemberRole @default(MEMBER)
   createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz()
 
-  group Group @relation(fields: [groupId], references: [id])
-  user  User? @relation(fields: [userId], references: [id])
+  group        Group         @relation(fields: [groupId], references: [id])
+  user         User?         @relation(fields: [userId], references: [id])
+  transactions Transaction[]
 
   @@unique([groupId, userId])
   @@map("group_members")
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal  @db.Decimal(10, 2)
+  description String?  @db.VarChar(255)
+  memberId    Int      @map("member_id")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  member GroupMember @relation(fields: [memberId], references: [id])
+
+  @@map("transactions")
+}
+
+model TransactionSplit {
+  transactionId Int     @map("transaction_id")
+  memberId      Int     @map("member_id")
+  amount        Decimal @db.Decimal(10, 2)
+
+  @@id([transactionId, memberId])
+  @@map("transaction_splits")
 }
 
 enum GroupMemberRole {

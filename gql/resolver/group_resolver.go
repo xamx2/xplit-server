@@ -18,7 +18,19 @@ func (r *groupResolver) Members(ctx context.Context) (rs []groupMemberResolver, 
 		return nil, err
 	}
 	for _, member := range members {
-		rs = append(rs, groupMemberResolver{GroupMember: member})
+		rs = append(rs, groupMemberResolver{member})
+	}
+	return
+}
+
+func (r *groupResolver) Transactions(ctx context.Context) (rs []transactionResolver, err error) {
+	db := contexts.UseDB(ctx)
+	ts, err := r.Group.Transactions(db, ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, t := range ts {
+		rs = append(rs, transactionResolver{t})
 	}
 	return
 }

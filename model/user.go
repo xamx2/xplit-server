@@ -7,6 +7,8 @@ import (
 )
 
 type User struct {
+	bun.BaseModel `bun:"alias:u"`
+
 	ID int32 `bun:"id,pk,autoincrement"`
 }
 
