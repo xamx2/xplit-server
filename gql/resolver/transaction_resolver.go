@@ -28,9 +28,9 @@ func (t transactionResolver) Splits(ctx context.Context) (rs []*transactionSplit
 }
 
 func (t transactionResolver) Member(ctx context.Context) (*groupMemberResolver, error) {
-	m, err := t.Transaction.Member(contexts.UseDB(ctx), ctx)
+	m, err := contexts.UseGroupMemberLoader(ctx).Load(ctx, t.MemberID)()
 	if err != nil {
 		return nil, err
 	}
-	return &groupMemberResolver{*m}, nil
+	return &groupMemberResolver{m}, nil
 }

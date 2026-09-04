@@ -5,6 +5,7 @@ go 1.26.5
 require (
 	github.com/dundunlabs/grapher v0.3.0
 	github.com/dundunlabs/grapher/explorer/graphiql v0.1.0
+	github.com/graph-gophers/dataloader/v7 v7.2.0
 	github.com/graph-gophers/graphql-go v1.10.2
 	github.com/joho/godotenv v1.5.1
 	github.com/uptrace/bun v1.2.18

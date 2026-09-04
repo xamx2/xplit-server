@@ -47,8 +47,8 @@ type TransactionSplit {
 }
 
 type Settlement {
-  fromId: Int!
-  toId: Int!
+  from: GroupMember!
+  to: GroupMember!
   amount: Float!
 }
 
