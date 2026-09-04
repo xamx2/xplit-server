@@ -34,3 +34,15 @@ func (r *groupResolver) Transactions(ctx context.Context) (rs []transactionResol
 	}
 	return
 }
+
+func (r *groupResolver) Settlements(ctx context.Context) (rs []settlementResolver, err error) {
+	db := contexts.UseDB(ctx)
+	ss, err := r.Group.Settlements(db, ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, s := range ss {
+		rs = append(rs, settlementResolver{s})
+	}
+	return
+}

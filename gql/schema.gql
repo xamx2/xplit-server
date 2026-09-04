@@ -21,6 +21,7 @@ type Group {
   name: String!
   members: [GroupMember!]!
   transactions: [Transaction!]!
+  settlements: [Settlement!]!
 }
 
 type GroupMember {
@@ -43,6 +44,12 @@ type TransactionSplit {
   memberId: Int!
   amount: Float!
   member: GroupMember!
+}
+
+type Settlement {
+  fromId: Int!
+  toId: Int!
+  amount: Float!
 }
 
 input GroupInput {
