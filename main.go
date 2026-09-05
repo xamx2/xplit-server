@@ -12,6 +12,7 @@ import (
 	"github.com/dundunlabs/grapher"
 	"github.com/dundunlabs/grapher/explorer/graphiql"
 	"github.com/graph-gophers/dataloader/v7"
+	"github.com/rs/cors"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
@@ -40,7 +41,7 @@ func main() {
 
 	srv := http.Server{
 		Addr:    ":8080",
-		Handler: mux,
+		Handler: cors.Default().Handler(mux),
 		BaseContext: func(_ net.Listener) context.Context {
 			httpCtx := contexts.WithDB(ctx, db)
 			httpCtx = contexts.WithGroupMemberLoader(httpCtx, gml)

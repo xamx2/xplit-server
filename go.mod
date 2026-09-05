@@ -8,6 +8,7 @@ require (
 	github.com/graph-gophers/dataloader/v7 v7.2.0
 	github.com/graph-gophers/graphql-go v1.10.2
 	github.com/joho/godotenv v1.5.1
+	github.com/rs/cors v1.11.1
 	github.com/uptrace/bun v1.2.18
 	github.com/uptrace/bun/dialect/pgdialect v1.2.18
 	github.com/uptrace/bun/driver/pgdriver v1.2.18
