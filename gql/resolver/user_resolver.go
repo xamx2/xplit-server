@@ -14,7 +14,7 @@ type userResolver struct {
 
 func (r *userResolver) Groups(ctx context.Context) (rs []*groupResolver, err error) {
 	db := contexts.UseDB(ctx)
-	groups, err := contexts.UseCurrentUser(ctx).Groups(db, ctx)
+	groups, err := contexts.UseAuth(ctx).MustGetUser(ctx).Groups(db, ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +28,7 @@ func (r *userResolver) Group(ctx context.Context, args struct {
 	ID graphql.ID
 }) (*groupResolver, error) {
 	db := contexts.UseDB(ctx)
-	group, err := contexts.UseCurrentUser(ctx).Group(db, ctx, args.ID)
+	group, err := contexts.UseAuth(ctx).MustGetUser(ctx).Group(db, ctx, args.ID)
 	if err != nil {
 		return nil, err
 	}

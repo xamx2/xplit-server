@@ -13,6 +13,8 @@ type GroupArgument struct {
 }
 
 func (arg GroupArgument) Member(ctx context.Context) (gm model.GroupMember, err error) {
-	err = contexts.UseDB(ctx).NewSelect().Model(&gm).Where("group_id = ? AND user_id = ?", arg.GroupID, contexts.UseCurrentUser(ctx).ID).Scan(ctx)
+	err = contexts.UseDB(ctx).NewSelect().Model(&gm).
+		Where("group_id = ? AND user_id = ?", arg.GroupID, contexts.UseAuth(ctx).MustGetUser(ctx).ID).
+		Scan(ctx)
 	return
 }

@@ -18,7 +18,7 @@ func (*mutationResolver) CreateGroup(ctx context.Context, args struct {
 	if err := args.Input.Decode(g); err != nil {
 		return nil, err
 	}
-	db, u := contexts.UseDB(ctx), contexts.UseCurrentUser(ctx)
+	db, u := contexts.UseDB(ctx), contexts.UseAuth(ctx).MustGetUser(ctx)
 	if err := u.CreateGroup(db, ctx, g); err != nil {
 		return nil, err
 	}

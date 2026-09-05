@@ -9,6 +9,6 @@ import (
 type queryResolver struct{}
 
 func (*queryResolver) CurrentUser(ctx context.Context) *userResolver {
-	u := contexts.UseCurrentUser(ctx)
+	u := contexts.UseAuth(ctx).MustGetUser(ctx)
 	return &userResolver{*u}
 }

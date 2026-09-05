@@ -9,7 +9,9 @@ import (
 type User struct {
 	bun.BaseModel `bun:"alias:u"`
 
-	ID int32 `bun:"id,pk,autoincrement"`
+	ID          int32  `bun:"id,pk,autoincrement"`
+	FirebaseUID string `bun:"firebase_uid,unique,notnull"`
+	Name        *string
 }
 
 func (u User) CreateGroup(db bun.IDB, ctx context.Context, g *Group) error {
@@ -20,6 +22,7 @@ func (u User) CreateGroup(db bun.IDB, ctx context.Context, g *Group) error {
 		if _, err := tx.NewInsert().Model(&GroupMember{
 			UserID:  &u.ID,
 			GroupID: g.ID,
+			Name:    u.Name,
 			Role:    GroupMemberRoleOwner,
 		}).Exec(ctx); err != nil {
 			return err

@@ -4,7 +4,9 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
+  firebaseUid String  @unique @map("firebase_uid") @db.VarChar(128)
+  name        String? @db.VarChar(255)
 
   groups GroupMember[]
 
