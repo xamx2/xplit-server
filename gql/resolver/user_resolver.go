@@ -34,3 +34,15 @@ func (r *userResolver) Group(ctx context.Context, args struct {
 	}
 	return &groupResolver{Group: *group}, nil
 }
+
+func (r *userResolver) Transactions(ctx context.Context) (rs []transactionResolver, err error) {
+	db := contexts.UseDB(ctx)
+	ts, err := r.User.Transactions(db, ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, t := range ts {
+		rs = append(rs, transactionResolver{t})
+	}
+	return
+}

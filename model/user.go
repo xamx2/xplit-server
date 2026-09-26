@@ -47,3 +47,12 @@ func (u User) Group(db bun.IDB, ctx context.Context, id any) (g *Group, err erro
 		Scan(ctx)
 	return
 }
+
+func (u User) Transactions(db bun.IDB, ctx context.Context) (ts []Transaction, err error) {
+	err = db.NewSelect().Model(&ts).
+		Join("JOIN group_members AS gm ON gm.id = t.member_id").
+		Where("gm.user_id = ?", u.ID).
+		OrderBy("created_at", bun.OrderDesc).
+		Scan(ctx)
+	return
+}

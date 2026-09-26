@@ -14,6 +14,7 @@ type User {
   id: Int!
   groups: [Group!]!
   group(id: ID!): Group!
+  transactions: [Transaction!]!
 }
 
 type Group {
